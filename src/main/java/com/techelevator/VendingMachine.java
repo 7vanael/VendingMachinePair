@@ -15,21 +15,24 @@ public class VendingMachine {
 	private static final String FEED_MONEY = "(1) Feed Money";
 	private static final String SELECT_PRODUCT = "(2) Select Product";
 	private static final String FINISH_TRANSACTION = "(3) Finish Transaction";
+	private static final String ONE_DOLLAR_AMOUNT = "(1) $1";
+	private static final String FIVE_DOLLAR_AMOUNT = "(2) $5";
+	private static final String TEN_DOLLAR_AMOUNT = "(3) $10";
+
 	private static final String[] HOME_SCREEN = {DISPLAY_MENU, PURCHASE, EXIT, SALES_REPORT};
 	private static final String[] PURCHASE_SCREEN = {FEED_MONEY, SELECT_PRODUCT, FINISH_TRANSACTION};
+	private static final String [] FEED_MONEY_OPTIONS = {ONE_DOLLAR_AMOUNT, FIVE_DOLLAR_AMOUNT, TEN_DOLLAR_AMOUNT};
 
 
 	public static void main(String[] args) {
 		VendingMachine vendingMachine = new VendingMachine();
-
-		vendingMachine.run();
-
+		InventoryManager inventoryManager = new InventoryManager();
+		POS pos = new POS();
+		vendingMachine.run(pos, inventoryManager, vendingMachine);
 	}
 
 
-	public void run(){
-		VendingMachine vendingMachine = new VendingMachine();
-		InventoryManager inventoryManager = new InventoryManager();
+	public void run(POS pos, InventoryManager inventoryManager, VendingMachine vendingMachine){
 		inventoryManager.PopulateInventory();
 		boolean exit = false;
 		UserInterface userInterface = new UserInterface();
@@ -45,7 +48,7 @@ public class VendingMachine {
 			if(choice.equalsIgnoreCase(DISPLAY_MENU)){
 				inventoryManager.printInventory();
 			}else if(choice.equalsIgnoreCase(PURCHASE)){
-				vendingMachine.purchaseMenu();
+				vendingMachine.purchaseMenu(pos,inventoryManager ,vendingMachine);
 			}else if(choice.equalsIgnoreCase(EXIT)){
 				exit = true;
 			}else if (choice.equalsIgnoreCase(SALES_REPORT)){
@@ -54,26 +57,48 @@ public class VendingMachine {
 		}while(!exit);
 	}
 
-	public void purchaseMenu(){
+	public void purchaseMenu(POS pos, InventoryManager inventoryManager,VendingMachine vendingMachine){
 		boolean exit = false;
 		UserInterface userInterface = new UserInterface();
 
+
 		do {
 			System.out.println();
-//			System.out.println("Current Balance: " + POS.getBalance);
+			System.out.println("Current Balance: " + pos.getBalance());
 			System.out.println();
 			userInterface.printMenu(PURCHASE_SCREEN);
 			String choice = userInterface.getUserMenuInput(keyboard, PURCHASE_SCREEN);
 
 			if(choice.equalsIgnoreCase(FEED_MONEY)){
-				System.out.println("Hi");
+				vendingMachine.FeedMoneyOptions(pos, inventoryManager, vendingMachine);
 			}else if(choice.equalsIgnoreCase(SELECT_PRODUCT)){
 				//important code stuff
 			}else if(choice.equalsIgnoreCase(FINISH_TRANSACTION)){
-				//important code stuff
+				pos.finishTransaction(pos, inventoryManager, vendingMachine);
 				exit = true;
 			}
 		}while(!exit);
+
+	}
+
+	public void FeedMoneyOptions(POS pos, InventoryManager inventoryManager, VendingMachine vendingMachine){
+		UserInterface userInterface = new UserInterface();
+
+			System.out.println();
+			System.out.println("Current Balance: " + pos.getBalance());
+			System.out.println();
+			userInterface.printMenu(FEED_MONEY_OPTIONS);
+			String choice = userInterface.getUserMenuInput(keyboard, FEED_MONEY_OPTIONS);
+
+			if(choice.equalsIgnoreCase(ONE_DOLLAR_AMOUNT)){
+				pos.feedMoney("1");
+			}else if(choice.equalsIgnoreCase(FIVE_DOLLAR_AMOUNT)){
+				pos.feedMoney("5");
+			}else if(choice.equalsIgnoreCase(TEN_DOLLAR_AMOUNT)){
+				pos.feedMoney("10");
+			}
+
+			vendingMachine.purchaseMenu(pos, inventoryManager ,vendingMachine);
 
 	}
 
