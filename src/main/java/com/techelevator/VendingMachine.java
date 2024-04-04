@@ -21,12 +21,16 @@ public class VendingMachine {
 
 	public static void main(String[] args) {
 		VendingMachine vendingMachine = new VendingMachine();
+
 		vendingMachine.run();
+
 	}
 
 
 	public void run(){
 		VendingMachine vendingMachine = new VendingMachine();
+		InventoryManager inventoryManager = new InventoryManager();
+		inventoryManager.PopulateInventory();
 		boolean exit = false;
 		UserInterface userInterface = new UserInterface();
 
@@ -39,7 +43,7 @@ public class VendingMachine {
 
 
 			if(choice.equalsIgnoreCase(DISPLAY_MENU)){
-				System.out.println("Hi");
+				inventoryManager.printInventory();
 			}else if(choice.equalsIgnoreCase(PURCHASE)){
 				vendingMachine.purchaseMenu();
 			}else if(choice.equalsIgnoreCase(EXIT)){
@@ -64,9 +68,9 @@ public class VendingMachine {
 			if(choice.equalsIgnoreCase(FEED_MONEY)){
 				System.out.println("Hi");
 			}else if(choice.equalsIgnoreCase(SELECT_PRODUCT)){
-
+				//important code stuff
 			}else if(choice.equalsIgnoreCase(FINISH_TRANSACTION)){
-
+				//important code stuff
 				exit = true;
 			}
 		}while(!exit);

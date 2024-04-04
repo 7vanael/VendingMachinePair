@@ -35,6 +35,20 @@ public class UserInterface {
         return userChoice;
     }
 
+    public String getUserInput(Scanner keyboard){
+        String input = "";
+        boolean validInput = false;
+        while(!validInput){
+            input = keyboard.nextLine();
+            if(input.length()>0){
+                validInput = true;
+            }else {
+                System.out.println("Please make a valid entry");
+            }
+        }
+        return input;
+    }
+
 
 
 }
