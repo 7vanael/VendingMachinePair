@@ -59,12 +59,16 @@ public class POS {
         }
 
         System.out.println(toPrint);
-        vendingMachine.run(pos, inventoryManager, vendingMachine);
+//        vendingMachine.run(pos, inventoryManager, vendingMachine);
 
     }
 
     public BigDecimal getBalance() {
         return balance;
+    }
+    public void payPrice(BigDecimal price){
+        balance = balance.subtract(price);
+        System.out.print("New balance is: $"+ getBalance() + " | ");
     }
 
 }

@@ -48,7 +48,7 @@ public class VendingMachine {
 			if(choice.equalsIgnoreCase(DISPLAY_MENU)){
 				inventoryManager.printInventory();
 			}else if(choice.equalsIgnoreCase(PURCHASE)){
-				vendingMachine.purchaseMenu(pos,inventoryManager ,vendingMachine);
+				vendingMachine.purchaseMenu(pos,inventoryManager ,vendingMachine, keyboard);
 			}else if(choice.equalsIgnoreCase(EXIT)){
 				exit = true;
 			}else if (choice.equalsIgnoreCase(SALES_REPORT)){
@@ -57,7 +57,7 @@ public class VendingMachine {
 		}while(!exit);
 	}
 
-	public void purchaseMenu(POS pos, InventoryManager inventoryManager,VendingMachine vendingMachine){
+	public void purchaseMenu(POS pos, InventoryManager inventoryManager,VendingMachine vendingMachine, Scanner keyboard){
 		boolean exit = false;
 		UserInterface userInterface = new UserInterface();
 
@@ -72,10 +72,11 @@ public class VendingMachine {
 			if(choice.equalsIgnoreCase(FEED_MONEY)){
 				vendingMachine.FeedMoneyOptions(pos, inventoryManager, vendingMachine);
 			}else if(choice.equalsIgnoreCase(SELECT_PRODUCT)){
-				//important code stuff
+				inventoryManager.selectProduct(pos, vendingMachine, userInterface, keyboard, inventoryManager);
 			}else if(choice.equalsIgnoreCase(FINISH_TRANSACTION)){
 				pos.finishTransaction(pos, inventoryManager, vendingMachine);
 				exit = true;
+
 			}
 		}while(!exit);
 
@@ -98,7 +99,7 @@ public class VendingMachine {
 				pos.feedMoney("10");
 			}
 
-			vendingMachine.purchaseMenu(pos, inventoryManager ,vendingMachine);
+			vendingMachine.purchaseMenu(pos, inventoryManager ,vendingMachine, keyboard);
 
 	}
 
