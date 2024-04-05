@@ -38,7 +38,6 @@ public class VendingMachine {
 		UserInterface userInterface = new UserInterface();
 
 		do {
-			System.out.println();
 			System.out.println("Hello! Welcome to the Vending Machine!");
 			System.out.println();
 			userInterface.printMenu(HOME_SCREEN);
@@ -64,17 +63,17 @@ public class VendingMachine {
 
 		do {
 			System.out.println();
-			System.out.println("Current Balance: " + pos.getBalance());
+			System.out.println("Current Balance: $" + pos.getBalance());
 			System.out.println();
 			userInterface.printMenu(PURCHASE_SCREEN);
 			String choice = userInterface.getUserMenuInput(keyboard, PURCHASE_SCREEN);
 
 			if(choice.equalsIgnoreCase(FEED_MONEY)){
-				vendingMachine.FeedMoneyOptions(pos, inventoryManager, vendingMachine);
+				vendingMachine.FeedMoneyOptions(pos);
 			}else if(choice.equalsIgnoreCase(SELECT_PRODUCT)){
-				inventoryManager.selectProduct(pos, vendingMachine, userInterface, keyboard, inventoryManager);
+				inventoryManager.selectProduct(pos, userInterface, keyboard);
 			}else if(choice.equalsIgnoreCase(FINISH_TRANSACTION)){
-				pos.finishTransaction(pos, inventoryManager, vendingMachine);
+				pos.finishTransaction();
 				exit = true;
 
 			}
@@ -82,14 +81,15 @@ public class VendingMachine {
 
 	}
 
-	public void FeedMoneyOptions(POS pos, InventoryManager inventoryManager, VendingMachine vendingMachine){
+	public void FeedMoneyOptions(POS pos){
 		UserInterface userInterface = new UserInterface();
 
 			System.out.println();
-			System.out.println("Current Balance: " + pos.getBalance());
+			System.out.println("Current Balance: $" + pos.getBalance());
 			System.out.println();
 			userInterface.printMenu(FEED_MONEY_OPTIONS);
 			String choice = userInterface.getUserMenuInput(keyboard, FEED_MONEY_OPTIONS);
+
 
 			if(choice.equalsIgnoreCase(ONE_DOLLAR_AMOUNT)){
 				pos.feedMoney("1");
@@ -99,7 +99,6 @@ public class VendingMachine {
 				pos.feedMoney("10");
 			}
 
-			vendingMachine.purchaseMenu(pos, inventoryManager ,vendingMachine, keyboard);
 
 	}
 

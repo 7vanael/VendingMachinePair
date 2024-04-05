@@ -39,9 +39,9 @@ public class InventoryManager {
         return inventory;
     }
 
-    public void selectProduct(POS pos, VendingMachine vendingMachine, UserInterface userInterface, Scanner keyboard, InventoryManager inventoryManager){
-        printInventory();
+    public void selectProduct(POS pos, UserInterface userInterface, Scanner keyboard){
         if(pos.getBalance().compareTo(new BigDecimal("0")) > 0) {
+            printInventory();
             System.out.println("Please enter the slot code for the item you'd like to purchase: ");
             String userSelection = userInterface.getUserInput(keyboard);
             boolean itemFound = false;
@@ -50,8 +50,11 @@ public class InventoryManager {
                     if(item.getCount() > 0) {
 
                         if(pos.getBalance().compareTo(item.getPrice()) >= 0){
-                            pos.payPrice(item.getPrice());
+                            String itemDetails = item.getName() + " " + item.getSlot();
+                            BigDecimal prior = pos.getBalance();
                             dispenseItem(item);
+                            pos.payPrice(item.getPrice());
+                            pos.log(prior, pos.getBalance(), itemDetails);
                             itemFound = true;
                         }
 
@@ -68,20 +71,21 @@ public class InventoryManager {
             }
 
         }else{
-            System.out.println("Your current balance is: $" + pos.getBalance() + "; Snacks aren't free!");
+            System.out.println();
+            System.out.println("Your current balance is: $" + pos.getBalance() + "... Snacks aren't free!");
         }
-
-//        vendingMachine.purchaseMenu(pos, inventoryManager, vendingMachine, keyboard);
     }
 
     public void printInventory(){
+        System.out.println();
         for(Vendable item : inventory){
             if(item.getCount() > 0){
                 System.out.println(item.getSlot() + " | " + item.getName() + " | $" + item.getPrice() + " | " + item.getCount()+ " remaining");
             }else{
-                System.out.println(item.getSlot() + " | " + item.getName() + "  is Sold Out");
+                System.out.println(item.getSlot() + " | " + item.getName() + " is Sold Out");
             }
         }
+        System.out.println();
     }
 
     public void dispenseItem(Vendable item){
