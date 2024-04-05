@@ -34,7 +34,5 @@ public abstract class Vendable {
         }else{
             System.out.println("Invalid count entered; count not changed");
         }
-
     }
-
 }

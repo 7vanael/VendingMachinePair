@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class POS {
     private BigDecimal balance = new BigDecimal("0");
@@ -18,6 +17,7 @@ public class POS {
     private static final BigDecimal QUARTER = new BigDecimal(".25");
     private static final BigDecimal DIME = new BigDecimal(".10");
     private static final  BigDecimal NICKLE = new BigDecimal(".05");
+    private String toPrint;
     File file = new File("Log.txt");
     public void feedMoney(String number){
         BigDecimal bigDecimalNum = new BigDecimal(number);
@@ -29,12 +29,12 @@ public class POS {
     public void finishTransaction(){
         BigDecimal prior = balance;
         BigDecimal remainder;
-        BigDecimal quarterCount = ZERO;
-        BigDecimal dimeCount = ZERO;
-        BigDecimal nickleCount = ZERO;
+        BigDecimal quarterCount;
+        BigDecimal dimeCount;
+        BigDecimal nickleCount;
 
         List<String> thingsToPrint = new ArrayList<>();
-
+        toPrint = "";
 
         while(balance.compareTo(ZERO) > 0) {
             if (balance.compareTo(QUARTER) >= 0) {
@@ -61,7 +61,7 @@ public class POS {
         }
 
         System.out.println();
-        String toPrint = "Your change is: ";
+        toPrint = "Your change is: ";
         int length = thingsToPrint.size();
         for (String itemToPrint : thingsToPrint){
             toPrint = toPrint + itemToPrint;
@@ -74,10 +74,14 @@ public class POS {
         System.out.println(toPrint);
         System.out.println();
     }
+    public String getToPrint(){
+        return toPrint;
+    }
 
     public BigDecimal getBalance() {
         return balance;
     }
+
     public void payPrice(BigDecimal price){
         balance = balance.subtract(price);
     }
@@ -92,8 +96,4 @@ public class POS {
             System.out.println("Log file not found.");
         }
     }
-
-
-
-
 }

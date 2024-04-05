@@ -1,17 +1,14 @@
 package com.techelevator;
 
-import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class InventoryManager {
     private List<Vendable> inventory = new ArrayList<>();
-    private BigDecimal MINIMUM_PURCHASE_PRICE;
     public void PopulateInventory(){
         File contents = new File("vendingmachine.csv");
         try(Scanner fileReader = new Scanner(contents)){
@@ -29,14 +26,9 @@ public class InventoryManager {
                     inventory.add(new Drink(lineArray[0], lineArray[1], new BigDecimal(lineArray[2])));
                 }
             }
-
         }catch (FileNotFoundException ex){
             System.out.println("Your inventory file was not found");
         }
-
-    }
-    public List<Vendable> getInventory(){
-        return inventory;
     }
 
     public void selectProduct(POS pos, UserInterface userInterface, Scanner keyboard){
@@ -57,17 +49,14 @@ public class InventoryManager {
                             pos.log(prior, pos.getBalance(), itemDetails);
                             itemFound = true;
                         }
-
                     }else{
                         System.out.println("This item is sold out!");
                         itemFound = true;
                     }
                 }
-
             }
             if (!itemFound){
                 System.out.println("The entered code does not match a valid slot! Try again silly person.");
-
             }
 
         }else{
