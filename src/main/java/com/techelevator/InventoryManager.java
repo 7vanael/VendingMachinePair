@@ -94,4 +94,8 @@ public class InventoryManager {
             System.out.println(gum.getPhrase());
         }
     }
+
+    public List<Vendable> getInventory() {
+        return inventory;
+    }
 }
