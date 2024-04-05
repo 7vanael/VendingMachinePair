@@ -37,7 +37,7 @@ public class POSTest {
     }
 
     @Test
-    public void Balance_of_65cents_dispenses_correct_change_finishTransaction() {
+    public void Balance_of_65cents_dispenses_correct_change_all_three_coins_finishTransaction() {
         //Arrange
         POS pos = new POS();
         pos.feedMoney(".65");
@@ -48,16 +48,40 @@ public class POSTest {
         assertTrue(expected.compareTo(pos.getToPrint()) == 0);
     }
     @Test
-    public void finishTransaction() {
+    public void Balance_of_30cents_returns_2_separate_coins_finishTransaction() {
+        //Arrange
+        POS pos = new POS();
+        pos.feedMoney(".30");
+        String expected = "Your change is: 1 quarter(s) and 1 nickle(s)";
+
+        //Act
+        pos.finishTransaction();
+        assertTrue(expected.compareTo(pos.getToPrint()) == 0);
     }
 
 
+    /*
+        This method is only called by
+        inventoryManager.selectProduct which validates that
+        the balance is sufficient to cover the cost before calling
 
+     */
     @Test
-    public void payPrice() {
+    public void Balance_reduced_by_price_payPrice() {
+        //Arrange
+        POS pos = new POS();
+        pos.feedMoney("2.75");
+        BigDecimal price = new BigDecimal("1.65");
+        BigDecimal expected = new BigDecimal("1.10");
+        BigDecimal actual;
+
+        //Act
+         pos.payPrice(price);
+         actual = pos.getBalance();
+
+         //Assert
+        assertTrue(actual.compareTo(expected) == 0);
+
     }
 
-//    @Test
-//    public void log() {
-//    }
 }
